@@ -30,36 +30,36 @@ jobs:
           CHAT_ID: ${{ secrets.CHAT_ID }}
         run: |
           python - <<'PY'
-import os, json, sys
-cfg = {
-  "telegram": {
-    "bot_token": os.environ.get("BOT_TOKEN", ""),
-    "chat_id": os.environ.get("CHAT_ID", ""),
-    "send_file": True,
-    "send_only_if_breakouts": True
-  }
-}
-open("notify_config.json","w",encoding="utf-8").write(json.dumps(cfg,ensure_ascii=False,indent=2))
-print("notify_config.json written (bot_token hidden).")
-PY
+          import os, json, sys
+          cfg = {
+                  "telegram": {
+                                "bot_token": os.environ.get("BOT_TOKEN", ""),
+                                "chat_id": os.environ.get("CHAT_ID", ""),
+                                "send_file": True,
+                                "send_only_if_breakouts": True
+                              }
+                }  
+          open("notify_config.json","w",encoding="utf-8").write(json.dumps(cfg,ensure_ascii=False,indent=2))
+          print("notify_config.json written (bot_token hidden).")
+          PY
 
-      - name: (Optional) Verify notify_config.json (sanity)
-        run: |
+          - name: (Optional) Verify notify_config.json (sanity)
+          run: |
           python -c "import json; print('cfg keys:', list(json.load(open('notify_config.json'))['telegram'].keys()))"
 
-      - name: Run NIFTY-500 GLB scanner
-        # adjust the command if your scanner needs args; ensure script writes glb_signals.csv in repo
-        run: |
+          - name: Run NIFTY-500 GLB scanner
+          # adjust the command if your scanner needs args; ensure script writes glb_signals.csv in repo
+          run: |
           python nifty500_glb_scanner.py
 
-      - name: Run formatter + Telegram send
-        run: |
+          - name: Run formatter + Telegram send
+          run: |
           python format_glb_telegram.py
 
-      - name: Upload generated XLSX as workflow artifact (optional)
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
+          - name: Upload generated XLSX as workflow artifact (optional)
+          if: always()
+          uses: actions/upload-artifact@v4
+          with:
           name: glb-excel
           path: |
             GLB_*.xlsx
