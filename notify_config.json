@@ -1,0 +1,8 @@
+{
+  "telegram": {
+    "bot_token": "8595419654:AAHBP8k3fS2WH296478TIcyBdUf2a-E3cNc",
+    "chat_id": "6967143028",
+    "send_file": true,
+    "send_only_if_breakouts": true
+  }
+}
